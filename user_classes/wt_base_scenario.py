@@ -146,7 +146,7 @@ class PurchaseFlightTicket(SequentialTaskSet): # класс с задачами 
 
     @task
     def uc04_ChooseFightOption(self):
-        r04_00_body = f"outboundFlight={quote(self.outboundFlight)}&numPassengers=1&advanceDiscount=0&seatType={self.seat_type}&seatPref={self.seat_pref}&reserveFlights.x=61&reserveFlights.y=9"
+        r04_00_body = f"outboundFlight={quote_plus(self.outboundFlight)}&numPassengers=1&advanceDiscount=0&seatType={self.seat_type}&seatPref={self.seat_pref}&reserveFlights.x=61&reserveFlights.y=9"
         # logger.info(f"uc04 request body: {r04_00_body}")
         
         with self.client.post(
@@ -167,8 +167,8 @@ class PurchaseFlightTicket(SequentialTaskSet): # класс с задачами 
         self.cityProvince = self.user_data_row["cityProvince"]
         self.exp_date = self.flights_data_row["exp_date"]
 
-        r05_00_body = f"firstName={self.firstname}&lastName={self.lastname}&address1={quote(self.street)}&address2={quote(self.cityProvince)}&pass1={quote(self.firstname+ ' ' + self.lastname)}&creditCard={generateRandomCardNumber()}&expDate={quote(self.exp_date)}&oldCCOption=&numPassengers=1&seatType={self.seat_type}&seatPref={self.seat_pref}&outboundFlight={quote(self.outboundFlight)}&advanceDiscount=0&returnFlight=&JSFormSubmit=off&buyFlights.x=30&buyFlights.y=11&.cgifields=saveCC"
-        # logger.info(f"uc05 request body: {r05_00_body}")
+        r05_00_body = f"firstName={self.firstname}&lastName={self.lastname}&address1={quote(self.street)}&address2={quote(self.cityProvince)}&pass1={quote(self.firstname+ ' ' + self.lastname)}&creditCard={generateRandomCardNumber()}&expDate={quote_plus(self.exp_date)}&oldCCOption=&numPassengers=1&seatType={self.seat_type}&seatPref={self.seat_pref}&outboundFlight={quote_plus(self.outboundFlight)}&advanceDiscount=0&returnFlight=&JSFormSubmit=off&buyFlights.x=30&buyFlights.y=11&.cgifields=saveCC"
+        logger.info(f"uc05 request body: {r05_00_body}")
         
         with self.client.post(
             '/cgi-bin/reservations.pl',
